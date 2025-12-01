@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useState } from 'react';
+import { FiMapPin, FiClock, FiCalendar, FiArrowRight, FiX } from 'react-icons/fi';
 
 const tours = [
   {
@@ -8,160 +9,313 @@ const tours = [
     duration: '3 hours',
     price: '€35',
     description: 'Explore the heart of Dublin with our expert guides. Visit Trinity College, Temple Bar, and more!',
-    image: 'https://images.pexels.com/photos/3566191/pexels-photo-3566191.jpeg'
+    image: 'https://images.pexels.com/photos/3566191/pexels-photo-3566191.jpeg',
+    location: 'Dublin',
+    rating: 4.8,
+    reviews: 127
   },
   {
     id: 2,
-    title: 'Cliffs of Moher Day Trip',
+    title: 'Cliffs of Moher',
     duration: 'Full day',
     price: '€75',
     description: 'Experience the breathtaking Cliffs of Moher on this unforgettable day trip from Dublin.',
-    image: 'https://images.pexels.com/photos/33893284/pexels-photo-33893284.jpeg'
+    image: 'https://images.pexels.com/photos/33893284/pexels-photo-33893284.jpeg',
+    location: 'Cliffs of Moher',
+    rating: 4.9,
+    reviews: 243
   },
   {
     id: 3,
-    title: 'Guinness Storehouse Experience',
+    title: 'Guinness Storehouse',
     duration: '2.5 hours',
     price: '€45',
     description: 'Discover the history of Ireland\'s most famous beer with a tasting session included.',
-    image: 'https://images.pexels.com/photos/31759849/pexels-photo-31759849.jpeg'
+    image: 'https://images.pexels.com/photos/31759849/pexels-photo-31759849.jpeg',
+    location: 'Dublin',
+    rating: 4.7,
+    reviews: 189
   }
 ];
 
-export default function Home() {
+const Home = () => {
   const [selectedTour, setSelectedTour] = useState<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [bookingData, setBookingData] = useState({
     name: '',
     email: '',
     date: '',
+    guests: 1,
     tourId: ''
   });
 
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle booking submission
-    alert('Thank you for your booking! We\'ll contact you shortly to confirm your tour.');
+    alert(`Thank you for booking ${tours.find(t => t.id === selectedTour)?.title}! We'll send the details to ${bookingData.email}.`);
+    setSelectedTour(null);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setBookingData(prev => ({
+      ...prev,
+      [name]: name === 'guests' ? parseInt(value) : value
+    }));
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1561501878-aabd62634533?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)' }}>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
       <Head>
-        <title>We Show You - Dublin&apos;s Premier Tour Experience</title>
-        <meta name="description" content="Discover Dublin with We Show You - Expert guided tours of Ireland&apos;s capital" />
+        <title>We Show You - Premium Irish Tours & Experiences</title>
+        <meta name="description" content="Discover Ireland with We Show You - Expert guided tours showcasing the best of Irish culture, history, and landscapes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       {/* Navigation */}
-      <nav className="bg-green-800/80 backdrop-blur-md fixed w-full z-50 shadow-lg border-b-2 border-gold-500">
+      <nav className="bg-white/90 backdrop-blur-md fixed w-full z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <img 
-                src="https://img.icons8.com/color/48/000000/leprechaun.png" 
-                alt="Leprechaun Logo" 
-                className="h-10 w-10"
-              />
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-300 to-yellow-300 bg-clip-text text-transparent font-serif">We Show You Ireland</span>
+          <div className="flex justify-between h-20">
+            <div className="flex items-center space-x-3">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-700 flex items-center justify-center text-white font-bold text-xl">W</div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-amber-700 bg-clip-text text-transparent">WeShowYou</span>
             </div>
+            
+            {/* Mobile menu button */}
+            <div className="flex items-center md:hidden">
+              <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-amber-800 hover:text-amber-600"
+              >
+                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  {isMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                  )}
+                </svg>
+              </button>
+            </div>
+
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#tours" className="text-white hover:text-yellow-300 transition-colors duration-200">Tours</a>
-              <a href="#about" className="text-white hover:text-yellow-300 transition-colors duration-200">About</a>
-              <a href="#contact" className="text-white hover:text-yellow-300 transition-colors duration-200">Contact</a>
-              <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full border-2 border-yellow-400 hover:border-yellow-300 transition-all duration-300 shadow-lg hover:shadow-xl">
-                Book Now
+              <a href="#tours" className="text-amber-900 hover:text-amber-600 font-medium transition-colors duration-200">Tours</a>
+              <a href="#about" className="text-amber-900 hover:text-amber-600 font-medium transition-colors duration-200">About</a>
+              <a href="#reviews" className="text-amber-900 hover:text-amber-600 font-medium transition-colors duration-200">Reviews</a>
+              <a href="#contact" className="text-amber-900 hover:text-amber-600 font-medium transition-colors duration-200">Contact</a>
+              <button className="bg-gradient-to-r from-orange-500 to-amber-700 hover:from-orange-600 hover:to-amber-800 text-white px-6 py-2.5 rounded-full font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                Book a Tour
               </button>
             </div>
           </div>
         </div>
-      </nav>
 
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-100">
+            <div className="px-4 py-3 space-y-3">
+              <a href="#tours" className="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg">Tours</a>
+              <a href="#about" className="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg">About</a>
+              <a href="#reviews" className="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg">Reviews</a>
+              <a href="#contact" className="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg">Contact</a>
+              <button className="w-full mt-2 bg-gradient-to-r from-orange-500 to-amber-700 text-white px-4 py-2.5 rounded-lg font-medium">
+                Book a Tour
+              </button>
+            </div>
+          </div>
+        )}
+      </nav>
+      
       {/* Hero Section */}
-      <div className="relative pt-16">
+      <div className="relative pt-20 pb-16 md:pt-24 md:pb-20">
         <div className="absolute inset-0">
-          <img
-            className="w-full h-full object-cover"
-            src="https://images.pexels.com/photos/1542495/pexels-photo-1542495.jpeg"
-            alt="Irish countryside with rainbow over green fields"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://images.pexels.com/photos/417344/pexels-photo-417344.jpeg';
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-green-900/40 via-transparent to-green-900/60" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-100/80 to-amber-200/60 backdrop-blur-sm"></div>
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507136566006-cfc505b906fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
         </div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-serif drop-shadow-lg text-center">
-            <span className="text-yellow-300">Céad Míle Fáilte</span><br />
-            <span className="text-4xl sm:text-5xl lg:text-6xl text-white">A Hundred Thousand Welcomes</span>
-          </h1>
-          <p className="mt-6 text-xl text-white max-w-2xl leading-relaxed italic font-medium drop-shadow text-center mx-auto">
-            Discover the Emerald Isle's most breathtaking landscapes. From the rolling green hills to the magical rainbows, experience the real Ireland with our expert guides.
-          </p>
-          <div className="mt-10">
-            <a
-              href="#tours"
-              className="inline-flex items-center px-8 py-4 border-2 border-yellow-400 text-base font-bold rounded-full text-green-900 bg-yellow-400 hover:bg-yellow-300 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl md:text-lg font-serif"
-            >
-              Explore Tours
-            </a>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pt-16 md:pb-24">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-amber-100 text-amber-800 mb-6">
+              <span className="animate-pulse h-2 w-2 rounded-full bg-amber-500 mr-2"></span>
+              Explore Ireland with local experts
+            </div>
+            
+            <h1 className="text-4xl font-bold tracking-tight text-amber-900 sm:text-5xl md:text-6xl">
+              <span className="block">Discover the Magic of</span>
+              <span className="bg-gradient-to-r from-orange-500 to-amber-700 bg-clip-text text-transparent">
+                Ireland's Hidden Gems
+              </span>
+            </h1>
+            
+            <p className="mt-6 text-xl text-amber-800 max-w-2xl mx-auto leading-relaxed">
+              Experience Ireland like never before with our handcrafted tours. From the dramatic coastlines to the vibrant cities, we'll show you the heart and soul of the Emerald Isle.
+            </p>
+            
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="#tours"
+                className="px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-orange-500 to-amber-700 hover:from-orange-600 hover:to-amber-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center"
+              >
+                Explore Our Tours
+                <FiArrowRight className="ml-2 h-5 w-5" />
+              </a>
+              <a
+                href="#contact"
+                className="px-8 py-4 border border-amber-200 text-base font-medium rounded-full text-amber-800 bg-white hover:bg-amber-50 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+              >
+                Contact Us
+              </a>
+            </div>
+            
+            <div className="mt-12 flex flex-wrap justify-center gap-8 text-amber-900">
+              <div className="flex items-center">
+                <div className="flex-shrink-0 bg-amber-100 p-2 rounded-full">
+                  <FiMapPin className="h-6 w-6 text-amber-600" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium">10+ Locations</p>
+                  <p className="text-xs text-amber-700">Across Ireland</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="flex-shrink-0 bg-amber-100 p-2 rounded-full">
+                  <FiClock className="h-6 w-6 text-amber-600" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium">Flexible</p>
+                  <p className="text-xs text-amber-700">Tour Durations</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="flex-shrink-0 bg-amber-100 p-2 rounded-full">
+                  <svg className="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium">Local</p>
+                  <p className="text-xs text-amber-700">Expert Guides</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Dublin Castle Section */}
+      <div className="relative py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+            <div className="mb-10 lg:mb-0">
+              <h2 className="text-3xl font-bold text-amber-900 mb-6">Discover Dublin Castle</h2>
+              <p className="text-lg text-amber-800 mb-6">
+                Step into history at Dublin Castle, a landmark that has stood at the heart of Irish history for over 800 years. 
+                This magnificent structure has served as a fortress, royal residence, and now a major Irish government complex.
+              </p>
+              <p className="text-amber-700 mb-8">
+                Explore the State Apartments, medieval undercroft, and the beautiful Dubh Linn Gardens. Our expert guides will bring 
+                to life the castle's fascinating history, from Viking origins to its role in modern Irish government.
+              </p>
+              <a 
+                href="#tours" 
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-orange-500 to-amber-700 hover:from-orange-600 hover:to-amber-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+              >
+                Book Castle Tour
+                <FiArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+              <img 
+                src="https://media.istockphoto.com/id/173751911/photo/dublin-castle-in-ireland.jpg?s=1024x1024&w=is&k=20&c=HTbF7S6J2PdV3OiiIjYwDj_wKi73Vn7bD1BQrzyjL20=" 
+                alt="Dublin Castle"
+                className="w-full h-full object-cover aspect-video"
+                onError={(e) => {
+                  // Fallback to a different image if the primary one fails to load
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1602797882193-51cb0e037534?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <p className="text-white text-sm font-medium">Dublin Castle, Ireland</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Tours Section */}
-      <div id="tours" className="py-12 bg-white">
+      <div id="tours" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="relative inline-block">
-            <h2 className="text-3xl font-extrabold text-green-900 sm:text-4xl font-serif relative z-10 px-6">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-700 to-emerald-900">
-                Our Irish Adventures
-              </span>
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="inline-block px-3 py-1 text-sm font-semibold text-emerald-700 bg-emerald-100 rounded-full mb-4">
+              Our Tours
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+              Discover Ireland's Best Experiences
             </h2>
-            <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-yellow-200 rounded-full opacity-30 blur"></div>
-          </div>
-            <p className="mt-4 max-w-2xl mx-auto text-xl text-emerald-800 sm:mt-4 font-medium">
-              Choose from our selection of handcrafted Dublin experiences
+            <p className="mt-4 text-lg text-gray-600">
+              Handpicked tours that showcase the very best of Ireland's landscapes, history, and culture.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-3">
+          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {tours.map((tour) => (
               <div 
                 key={tour.id} 
-                className="group relative bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-2 border-emerald-100 hover:border-yellow-300"
+                className="group flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100"
               >
                 <div className="relative h-56 overflow-hidden">
                   <img 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
                     src={tour.image} 
                     alt={tour.title}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'https://via.placeholder.com/800x400?text=Tour+Image+Not+Available';
-                    }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-transparent to-transparent"></div>
-                  <span className="absolute top-4 right-4 bg-yellow-400 text-green-900 text-xs font-bold px-3 py-1 rounded-full border border-white shadow-md">
-                    {tour.duration}
-                  </span>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-2xl font-bold text-white drop-shadow-lg">
-                      {tour.title}
-                    </h3>
-                    <span className="text-indigo-200 font-medium">{tour.price}</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <h3 className="text-xl font-bold text-white">{tour.title}</h3>
+                        <div className="flex items-center mt-1 text-sm text-emerald-100">
+                          <FiMapPin className="h-4 w-4 mr-1" />
+                          {tour.location}
+                        </div>
+                      </div>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-600 text-white">
+                        {tour.price}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="p-6">
-                  <p className="text-gray-600 mb-6">
+                
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center text-sm text-gray-500 mb-3">
+                    <div className="flex items-center">
+                      <svg className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <span className="ml-1 text-gray-900 font-medium">{tour.rating}</span>
+                      <span className="mx-1">•</span>
+                      <span>{tour.reviews} reviews</span>
+                    </div>
+                    <div className="ml-auto flex items-center">
+                      <FiClock className="h-4 w-4 mr-1" />
+                      {tour.duration}
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-600 mb-6 flex-grow">
                     {tour.description}
                   </p>
-                  <button 
-                    onClick={() => setSelectedTour(tour.id)}
-                    className="w-full py-3 px-6 bg-gradient-to-r from-green-700 to-emerald-800 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 border border-yellow-400 hover:border-yellow-300"
-                  >
-                    Book Now
-                  </button>
+                  
+                  <div className="mt-auto">
+                    <button 
+                      onClick={() => setSelectedTour(tour.id)}
+                      className="w-full py-3 px-6 bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white font-medium rounded-lg transition-all duration-300 flex items-center justify-center group-hover:shadow-lg"
+                    >
+                      Book Now
+                      <FiArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -171,110 +325,129 @@ export default function Home() {
 
       {/* Booking Form */}
       {selectedTour && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6">
-              <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-bold text-white">
-                  Book Your Tour
-                </h3>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-md transform transition-all duration-300">
+            <div className="bg-gradient-to-r from-emerald-600 to-emerald-800 p-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-bold text-white">
+                    Book Your Tour
+                  </h3>
+                  <p className="mt-1 text-emerald-100">
+                    {tours.find(t => t.id === selectedTour)?.title}
+                  </p>
+                </div>
                 <button 
                   onClick={() => setSelectedTour(null)}
-                  className="text-white/80 hover:text-white transition-colors duration-200"
+                  className="text-white/80 hover:text-white transition-colors duration-200 p-1 -mt-1 -mr-1"
                 >
                   <span className="sr-only">Close</span>
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <FiX className="h-6 w-6" />
                 </button>
               </div>
-              <p className="mt-1 text-indigo-100">
-                {tours.find(t => t.id === selectedTour)?.title}
-              </p>
             </div>
             
             <form onSubmit={handleBookingSubmit} className="p-6 space-y-5">
-              <div className="space-y-1">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Full Name
-                </label>
-                <div className="relative">
+              <div className="space-y-5">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    Full Name
+                  </label>
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     required
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                    placeholder="John Doe"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
+                    placeholder="Your name"
                     value={bookingData.name}
-                    onChange={(e) => setBookingData({...bookingData, name: e.target.value})}
+                    onChange={handleInputChange}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
-                  </div>
                 </div>
-              </div>
-              
-              <div className="space-y-1">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email Address
-                </label>
-                <div className="relative">
+                
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    Email Address
+                  </label>
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     required
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                    placeholder="you@example.com"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
+                    placeholder="your@email.com"
                     value={bookingData.email}
-                    onChange={(e) => setBookingData({...bookingData, email: e.target.value})}
+                    onChange={handleInputChange}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+                      Tour Date
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <FiCalendar className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        required
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
+                        value={bookingData.date}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="guests" className="block text-sm font-medium text-gray-700 mb-1">
+                      Guests
+                    </label>
+                    <select
+                      id="guests"
+                      name="guests"
+                      className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 appearance-none bg-white"
+                      value={bookingData.guests}
+                      onChange={handleInputChange}
+                    >
+                      {[1, 2, 3, 4, 5, '6+'].map(num => (
+                        <option key={num} value={num}>
+                          {num} {num === 1 ? 'Person' : 'People'}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
-              </div>
-              
-              <div className="space-y-1">
-                <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                  Tour Date
-                </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    id="date"
-                    required
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 appearance-none"
-                    value={bookingData.date}
-                    onChange={(e) => setBookingData({...bookingData, date: e.target.value})}
-                  />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                    </svg>
+                
+                <div className="pt-2">
+                  <div className="flex items-center justify-between text-sm text-gray-500 mb-1">
+                    <span>Total Price:</span>
+                    <span className="text-lg font-bold text-emerald-700">
+                      {(() => {
+                        const price = parseInt(tours.find(t => t.id === selectedTour)?.price?.replace('€', '') || '0');
+                        const guests = typeof bookingData.guests === 'number' ? bookingData.guests : 6;
+                        return `€${price * guests}`;
+                      })()}
+                    </span>
                   </div>
+                  
+                  <button
+                    type="submit"
+                    className="w-full mt-4 py-3.5 px-6 bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white font-medium rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center"
+                  >
+                    <span>Confirm Booking</span>
+                    <FiArrowRight className="ml-2 h-5 w-5" />
+                  </button>
+                  
+                  <p className="mt-3 text-xs text-gray-500 text-center">
+                    You'll receive a confirmation email with all the details.
+                  </p>
                 </div>
               </div>
-              
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="w-full flex justify-center items-center py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
-                >
-                  <span>Confirm Booking</span>
-                  <svg className="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                  </svg>
-                </button>
-              </div>
-              
-              <p className="text-xs text-center text-gray-500 mt-4">
-                We'll send you a confirmation email with all the details.
-              </p>
             </form>
           </div>
         </div>
@@ -556,3 +729,4 @@ export default function Home() {
     </div>
   );
 }
+export default Home;
