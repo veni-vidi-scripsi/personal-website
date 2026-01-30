@@ -52,22 +52,16 @@ export default function Home() {
       </Head>
 
       {/* Navigation */}
-      <nav className="bg-green-800/80 backdrop-blur-md fixed w-full z-50 shadow-lg border-b-2 border-gold-500">
+      <nav className="bg-white/95 backdrop-blur-md fixed w-full z-50 shadow-lg border-b-2 border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <img 
-                src="https://img.icons8.com/color/48/000000/leprechaun.png" 
-                alt="Leprechaun Logo" 
-                className="h-10 w-10"
-              />
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-300 to-yellow-300 bg-clip-text text-transparent font-serif">We Show You Ireland</span>
+          <div className="flex justify-between h-24">
+            <div className="flex items-center">
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#tours" className="text-white hover:text-yellow-300 transition-colors duration-200">Tours</a>
-              <a href="#about" className="text-white hover:text-yellow-300 transition-colors duration-200">About</a>
-              <a href="#contact" className="text-white hover:text-yellow-300 transition-colors duration-200">Contact</a>
-              <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full border-2 border-yellow-400 hover:border-yellow-300 transition-all duration-300 shadow-lg hover:shadow-xl">
+              <a href="#tours" className="text-gray-800 hover:text-green-600 transition-colors duration-200 font-medium">Tours</a>
+              <a href="#about" className="text-gray-800 hover:text-green-600 transition-colors duration-200 font-medium">About</a>
+              <a href="#contact" className="text-gray-800 hover:text-green-600 transition-colors duration-200 font-medium">Contact</a>
+              <button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                 Book Now
               </button>
             </div>
@@ -76,7 +70,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative pt-16">
+      <div className="relative pt-24">
         <div className="absolute inset-0">
           <img
             className="w-full h-full object-cover"
@@ -90,20 +84,22 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-green-900/40 via-transparent to-green-900/60" aria-hidden="true" />
         </div>
         <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-serif drop-shadow-lg text-center">
-            <span className="text-yellow-300">Céad Míle Fáilte</span><br />
-            <span className="text-4xl sm:text-5xl lg:text-6xl text-white">A Hundred Thousand Welcomes</span>
-          </h1>
-          <p className="mt-6 text-xl text-white max-w-2xl leading-relaxed italic font-medium drop-shadow text-center mx-auto">
-            Discover the Emerald Isle's most breathtaking landscapes. From the rolling green hills to the magical rainbows, experience the real Ireland with our expert guides.
-          </p>
-          <div className="mt-10">
-            <a
-              href="#tours"
-              className="inline-flex items-center px-8 py-4 border-2 border-yellow-400 text-base font-bold rounded-full text-green-900 bg-yellow-400 hover:bg-yellow-300 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl md:text-lg font-serif"
-            >
-              Explore Tours
-            </a>
+          <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 md:p-12">
+            <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-serif drop-shadow-lg text-center">
+              <span className="text-emerald-300">Céad Míle Fáilte</span><br />
+              <span className="text-4xl sm:text-5xl lg:text-6xl text-white">A Hundred Thousand Welcomes</span>
+            </h1>
+            <p className="mt-6 text-xl text-white max-w-2xl leading-relaxed italic font-medium drop-shadow text-center mx-auto">
+              Discover the Emerald Isle's most breathtaking landscapes. From the rolling green hills to the magical rainbows, experience the real Ireland with our expert guides.
+            </p>
+            <div className="mt-10 text-center">
+              <a
+                href="#tours"
+                className="inline-flex items-center px-8 py-4 border-2 border-emerald-400 text-base font-bold rounded-full text-green-900 bg-emerald-400 hover:bg-emerald-300 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl md:text-lg font-serif"
+              >
+                Explore Tours
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -118,7 +114,7 @@ export default function Home() {
                 Our Irish Adventures
               </span>
             </h2>
-            <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-yellow-200 rounded-full opacity-30 blur"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-emerald-200 rounded-full opacity-30 blur"></div>
           </div>
             <p className="mt-4 max-w-2xl mx-auto text-xl text-emerald-800 sm:mt-4 font-medium">
               Choose from our selection of handcrafted Dublin experiences
@@ -129,7 +125,7 @@ export default function Home() {
             {tours.map((tour) => (
               <div 
                 key={tour.id} 
-                className="group relative bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-2 border-emerald-100 hover:border-yellow-300"
+                className="group relative bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-2 border-emerald-100 hover:border-emerald-300"
               >
                 <div className="relative h-56 overflow-hidden">
                   <img 
@@ -142,7 +138,7 @@ export default function Home() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-transparent to-transparent"></div>
-                  <span className="absolute top-4 right-4 bg-yellow-400 text-green-900 text-xs font-bold px-3 py-1 rounded-full border border-white shadow-md">
+                  <span className="absolute top-4 right-4 bg-emerald-400 text-green-900 text-xs font-bold px-3 py-1 rounded-full border border-white shadow-md">
                     {tour.duration}
                   </span>
                   <div className="absolute bottom-4 left-4 right-4">
@@ -158,7 +154,7 @@ export default function Home() {
                   </p>
                   <button 
                     onClick={() => setSelectedTour(tour.id)}
-                    className="w-full py-3 px-6 bg-gradient-to-r from-green-700 to-emerald-800 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 border border-yellow-400 hover:border-yellow-300"
+                    className="w-full py-3 px-6 bg-gradient-to-r from-green-700 to-emerald-800 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 border border-emerald-400 hover:border-emerald-300"
                   >
                     Book Now
                   </button>
@@ -290,7 +286,7 @@ export default function Home() {
               <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-green-900 sm:text-4xl font-serif">
                 <span className="relative">
                   <span className="relative z-10">Discover the Magic of Ireland</span>
-                  <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-300/40 -z-0"></span>
+                  <span className="absolute bottom-1 left-0 w-full h-3 bg-emerald-300/40 -z-0"></span>
                 </span>
               </p>
             </div>
@@ -302,7 +298,7 @@ export default function Home() {
           <div className="mt-10">
             <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
               <div className="relative">
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-yellow-300 border-2 border-yellow-300 shadow-md">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-emerald-300 border-2 border-emerald-300 shadow-md">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -314,7 +310,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-yellow-300 border-2 border-yellow-300 shadow-md">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-emerald-300 border-2 border-emerald-300 shadow-md">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -326,7 +322,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-yellow-300 border-2 border-yellow-300 shadow-md">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-emerald-300 border-2 border-emerald-300 shadow-md">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -339,7 +335,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-yellow-300 border-2 border-yellow-300 shadow-md">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-full bg-green-700 text-emerald-300 border-2 border-emerald-300 shadow-md">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
@@ -364,10 +360,10 @@ export default function Home() {
                 <h2 className="text-3xl font-extrabold text-green-900 sm:text-4xl font-serif relative z-10 px-4">
                   <span className="relative">
                     <span className="relative z-10">What Our Guests Say</span>
-                    <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-300/50 -z-0"></span>
+                    <span className="absolute bottom-1 left-0 w-full h-3 bg-emerald-300/50 -z-0"></span>
                   </span>
                 </h2>
-                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-200 to-yellow-100 rounded-full opacity-30 blur"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-200 to-emerald-100 rounded-full opacity-30 blur"></div>
               </div>
               <p className="mt-3 max-w-3xl text-lg text-gray-500">
                 Don't just take our word for it. Here's what our guests have to say about their experiences.
